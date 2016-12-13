@@ -1,10 +1,13 @@
 include_recipe "gocd::agent_windows_install"
 
-gocd_agent_autoregister_file 'C:\GoAgent\autoregister.properties' do
-  autoregister_key node['gocd']['agent']['autoregister']['key']
-  autoregister_hostname node['gocd']['agent']['autoregister']['hostname']
-  environments node['gocd']['agent']['autoregister']['environments']
-  resources node['gocd']['agent']['autoregister']['resources']
+
+if node['gocd']['agent']['autoregister']['enabled'] == true
+  gocd_agent_autoregister_file 'C:\GoAgent\config\autoregister.properties' do
+    autoregister_key node['gocd']['agent']['autoregister']['key']
+    autoregister_hostname node['gocd']['agent']['autoregister']['hostname']
+    environments node['gocd']['agent']['autoregister']['environments']
+    resources node['gocd']['agent']['autoregister']['resources']
+  end
 end
 
 service "Go Agent" do

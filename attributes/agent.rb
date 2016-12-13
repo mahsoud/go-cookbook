@@ -5,6 +5,7 @@ default['gocd']['agent']['vnc']['enabled'] = false
 
 default['gocd']['agent']['type'] = 'java'
 
+default['gocd']['agent']['autoregister']['enabled']      = false
 default['gocd']['agent']['autoregister']['key']          = nil
 default['gocd']['agent']['autoregister']['environments'] = %w()
 default['gocd']['agent']['autoregister']['resources']    = %w()
