@@ -20,6 +20,12 @@ http_request 'verify_go-server_comes_up' do
   action      :nothing
 end
 
+ruby_block 'wait for cruise config' do
+  block do
+    true until ::File.exists?(go_server_config_file)
+  end
+end
+
 ruby_block "publish_autoregister_key" do
   block do
     s = ::File.readlines(go_server_config_file).grep(/agentAutoRegisterKey="(\S+)"/)
