@@ -20,25 +20,28 @@ http_request 'verify_go-server_comes_up' do
   action      :nothing
 end
 
-ruby_block 'wait for cruise config' do
-  block do
-    true until ::File.exists?(go_server_config_file)
-  end
-end
+if node['gocd']['server']['autoregister']['publish_autoregister_key'] = true
 
-ruby_block "publish_autoregister_key" do
-  block do
-    s = ::File.readlines(go_server_config_file).grep(/agentAutoRegisterKey="(\S+)"/)
-    if s.length > 0
-      server_autoregister_key = s[0].to_s.match(/agentAutoRegisterKey="(\S+)"/)[1]
-    else
-      server_autoregister_key = nil
+  ruby_block 'wait for cruise config' do
+    block do
+      true until ::File.exists?(go_server_config_file)
     end
-    Chef::Log.warn("Enabling automatic agent registration. Any configured agent will be configured to build without authorization.")
-    node.set['gocd']['server']['autoregister_key'] = server_autoregister_key
-    node.save
   end
-  action :create
-  not_if { Chef::Config[:solo] }
-  retries 4
+
+  ruby_block "publish_autoregister_key" do
+    block do
+      s = ::File.readlines(go_server_config_file).grep(/agentAutoRegisterKey="(\S+)"/)
+      if s.length > 0
+        server_autoregister_key = s[0].to_s.match(/agentAutoRegisterKey="(\S+)"/)[1]
+      else
+        server_autoregister_key = nil
+      end
+      Chef::Log.warn("Enabling automatic agent registration. Any configured agent will be configured to build without authorization.")
+      node.set['gocd']['server']['autoregister_key'] = server_autoregister_key
+      node.save
+    end
+    action :create
+    not_if { Chef::Config[:solo] }
+    retries 4
+  end
 end
