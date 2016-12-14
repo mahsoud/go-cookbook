@@ -16,7 +16,7 @@ action :create do
   plugin_uri = new_resource.plugin_uri
 
   if node[:platform_family].include?("windows")
-    remote_file "#{server_work_dir}/plugins/external/#{plugin_name}.jar" do
+    remote_file "#{server_work_dir}\\plugins\\external\\#{plugin_name}.jar" do
       source plugin_uri
       retries 5
     end
