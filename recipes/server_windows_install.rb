@@ -9,7 +9,7 @@ log "Installing server to: #{node['gocd']['server']['work_dir'].gsub('/', '\\')}
 
 opts = []
 opts << '/S'
-opts << "/D='#{node['gocd']['server']['work_dir'].gsub('/', '\\')}'"
+opts << "/D=#{node['gocd']['server']['work_dir'].gsub('/', '\\')}"
 
 if defined?(Chef::Provider::Package::Windows)
   package 'Go Server' do
