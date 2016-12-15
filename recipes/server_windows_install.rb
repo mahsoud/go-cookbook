@@ -5,6 +5,8 @@ remote_file go_server_package_name do
   source go_server_package_url
 end
 
+log "Installing server to: #{node['gocd']['server']['work_dir'].gsub('/', '\\')}"
+
 opts = []
 opts << '/S'
 opts << "/D='#{node['gocd']['server']['work_dir'].gsub('/', '\\')}'"
