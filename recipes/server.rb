@@ -20,7 +20,7 @@ http_request 'verify_go-server_comes_up' do
   action      :nothing
 end
 
-if node['gocd']['server']['autoregister']['publish_autoregister_key'] = true
+if node['gocd']['server']['autoregister']['publish_autoregister_key'] == true
 
   ruby_block 'wait for cruise config' do
     block do
